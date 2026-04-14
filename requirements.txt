@@ -1,6 +1,7 @@
-tensorflow
 flask
+tensorflow
 numpy
 pillow
 scikit-learn
-matplotlib
+h5py
+gunicorn
