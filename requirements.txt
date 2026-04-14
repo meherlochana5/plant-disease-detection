@@ -5,3 +5,4 @@ pillow
 scikit-learn
 h5py
 gunicorn
+gdown
