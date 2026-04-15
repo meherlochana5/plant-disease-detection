@@ -6,8 +6,8 @@ import gdown
 from PIL import Image
 from tensorflow.keras.applications.resnet50 import preprocess_input
 
-MODEL_PATH = "models/final_model.h5"
-FILE_ID = "1gM7Nn9ukPp-XahWNP9XBNjXYr4rYW8KV"
+MODEL_PATH = "models/final_model.keras"
+FILE_ID = "1f06jup1jkwu8LeBPeuPH1y-mAaZZESD3"
 
 # Create models folder
 os.makedirs("models", exist_ok=True)
