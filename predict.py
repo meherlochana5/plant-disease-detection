@@ -25,6 +25,7 @@ if not os.path.exists(MODEL_DIR):
 # Load model
 model = tf.keras.models.load_model(MODEL_DIR)
 
+# Load class labels
 with open("class_indices.json", "r") as f:
     labels = json.load(f)
 
@@ -32,6 +33,7 @@ classes = {v: k for k, v in labels.items()}
 
 def is_leaf(img):
     arr = np.array(img.resize((224, 224)))
+
     if arr.ndim != 3:
         return False
 
@@ -41,6 +43,7 @@ def is_leaf(img):
 
     green_pixels = ((g > r) & (g > b)).mean()
     return green_pixels > 0.20
+
 
 def predict_image(path):
     img = Image.open(path).convert("RGB")
@@ -53,7 +56,10 @@ def predict_image(path):
     img = np.expand_dims(img, axis=0)
     img = preprocess_input(img)
 
-    pred = model.predict(img)[0]
+    infer = model.signatures["serving_default"]
+    pred = infer(tf.constant(img))
+    pred = list(pred.values())[0].numpy()[0]
+
     idx = np.argmax(pred)
     confidence = round(float(np.max(pred)) * 100, 2)
 
