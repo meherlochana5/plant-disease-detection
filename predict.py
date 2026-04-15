@@ -3,22 +3,27 @@ import numpy as np
 import json
 import os
 import gdown
+import zipfile
 from PIL import Image
 from tensorflow.keras.applications.resnet50 import preprocess_input
 
-MODEL_PATH = "models/final_model.keras"
-FILE_ID = "1f06jup1jkwu8LeBPeuPH1y-mAaZZESD3"
+MODEL_DIR = "models/plant_savedmodel"
+ZIP_PATH = "models/plant_savedmodel.zip"
+FILE_ID = "1dJLrhlVVs7GjvWi1SKRsxiycC97wrAEt"
 
 # Create models folder
 os.makedirs("models", exist_ok=True)
 
-# Download model if missing
-if not os.path.exists(MODEL_PATH):
+# Download and extract model if missing
+if not os.path.exists(MODEL_DIR):
     url = f"https://drive.google.com/uc?id={FILE_ID}"
-    gdown.download(url, MODEL_PATH, quiet=False)
+    gdown.download(url, ZIP_PATH, quiet=False)
+
+    with zipfile.ZipFile(ZIP_PATH, "r") as zip_ref:
+        zip_ref.extractall("models")
 
 # Load model
-model = tf.keras.models.load_model(MODEL_PATH, compile=False)
+model = tf.keras.models.load_model(MODEL_DIR)
 
 with open("class_indices.json", "r") as f:
     labels = json.load(f)
